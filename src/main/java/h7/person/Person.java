@@ -4,7 +4,7 @@ public class Person {
     private String name;
     private int age;
     private Gender gender = Gender.UNKNOWN;
-    static final int numberOfPossibleGenders = Gender.values().length;
+    public static final int numberOfPossibleGenders = Gender.values().length;
     static final int MAX_AGE = 130;
 
     public Person(String name, int age){
