@@ -2,53 +2,57 @@ package h7.bank;
 
 public class Bank {
     private BankAccount[] accounts = new BankAccount[10];
-    private static final int startingAmount = 100;
 
-    public void addAccount(BankAccount bac){
+    public void addAccount(BankAccount bac) throws BankIsFullException{
         for (int i = 0; i < accounts.length; i++){
-            if (accounts[i] != null) continue;
-            accounts[i] = bac;
+            if (accounts[i] == null) {
+                accounts[i] = bac;
+                System.out.println("Succesfully added account");
+                break;
+            } else if(i == accounts.length -1 && accounts[i] != null) {
+                throw new BankIsFullException();
+            }
         }
+
     }
 
-    public void handleTransaction(int bc1, int bc2, int amount, TransactionType type){
-        switch (type){
-            case ADD:
-                try {
-                    accounts[bc2].substractFromBalance(amount);
-                    System.out.println("Subtracted " + amount + " from bankaccountnumber: " + accounts[bc2]);
-                    accounts[bc1].addToBalance(amount);
-                    System.out.println("Added " + amount + " to bankaccountnumber: " + accounts[bc1]);
-                } catch (BalanceException e) {
-                    System.out.println(e.getMessage());
-                }
+    public void handleTransaction(BankAccount ba1, BankAccount ba2, double amount, TransactionType type) throws TransactionException {
+        if (ba1 != ba2){
+            switch (type){
+                case ADD:
+                    try{
+                        ba2.substractFromBalance(amount);
+                        ba1.addToBalance(amount);
+                    } catch (BalanceException e) {
+                        System.out.println(e.getMessage());
+                    }
                 break;
-            case SUB:
-                try {
-                    accounts[bc1].substractFromBalance(amount);
-                    System.out.println("Subtracted " + amount + " from bankaccountnumber: " + accounts[bc1]);
-                    accounts[bc2].addToBalance(amount);
-                    System.out.println("Added " + amount + " to bankaccountnumber: " + accounts[bc2]);
-                } catch (BalanceException e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
-            default: break;
-        }
+                case SUB:
+                    try{
+                        ba1.substractFromBalance(amount);
+                        ba2.addToBalance(amount);
+                    } catch (BalanceException e) {
+                        System.out.println(e.getMessage());
+                    }
+            }
+        } else throw new TransactionException();
+
     }
 
-    public int getSumOfAllBankAccountBalances(){
+    public double getSumOfAllBankAccountBalances(){
         int sum = 0;
         for (int i = 0; i < accounts.length; i++){
+            if (accounts[i] == null) break;
             sum += accounts[i].getBalance();
-            System.out.println("Sum of all the bankaccount balances is: " +  sum);
         }
+        System.out.println("Sum of all the bankaccount balances is: " +  sum);
         return sum;
     }
 
     public void printAllNumbersAndInterests(){
         for(BankAccount bacc : accounts){
-            System.out.println("BankAccoutNumber: " + bacc.getNumber() + ". Interest: " + bacc.getInterest());
+            if (bacc != null) System.out.println("BankAccoutNumber: " + bacc.getNumber() + ". Interest: " + bacc.getInterest());
+            else break;
         }
     }
 }
