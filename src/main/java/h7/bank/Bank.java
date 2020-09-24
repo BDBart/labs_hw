@@ -36,7 +36,6 @@ public class Bank {
                     }
             }
         } else throw new TransactionException();
-
     }
 
     public double getSumOfAllBankAccountBalances(){
@@ -52,6 +51,7 @@ public class Bank {
     public void printAllNumbersAndInterests(){
         for(BankAccount bacc : accounts){
             if (bacc != null) System.out.println("BankAccoutNumber: " + bacc.getNumber() + ". Interest: " + bacc.getInterest());
+
             else break;
         }
     }

@@ -1,7 +1,9 @@
-package h10;
+package h10.inheritance;
 
 public class Teacher extends Person {
+
     public Teacher(){
-        name = "de docent";
+        super();
+        name = "Teach";
     }
 }
